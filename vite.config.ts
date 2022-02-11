@@ -17,7 +17,6 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
-
     // https://github.com/hannoeru/vite-plugin-pages
     Pages(),
     Layouts(),

@@ -1,6 +1,6 @@
 // register vue composition api globally
-import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { ViteSSG } from 'vite-ssg'
+import devalue from '@nuxt/devalue'
 import generatedRoutes from 'virtual:generated-pages'
 import { setupLayouts } from 'virtual:generated-layouts'
 import App from './App.vue'
@@ -8,10 +8,15 @@ import 'virtual:windi.css'
 import './assets/styles/main.css'
 const routes = setupLayouts(generatedRoutes)
 
-const app = createApp(App)
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-app.use(router)
-app.mount('#app')
+export const createApp = ViteSSG(
+  App,
+  { routes },
+  (ctx) => {
+    Object.values(import.meta.globEager('./modules/*.ts')).map(i => i.install?.(ctx))
+  },
+  {
+    transformState(state) {
+      return import.meta.env.SSR ? devalue(state) : state
+    },
+  },
+)
