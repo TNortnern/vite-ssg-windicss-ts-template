@@ -9,10 +9,8 @@ module.exports = {
 
       },
       fontFamily: {
-        karla: ['Karla', 'sans-serif'],
       },
       colors: {
-        black: '#272727',
       },
     },
   },
